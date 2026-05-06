@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Home Game · Poker</title> <link href="https://protect.checkpoint.com/v2/r01/___https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;500;600;700;800&display=swap___.Y3AxOmJhbmNvYWJjYnJhc2lsc2E6YzpvOmIzODAwNjBhNDE0OWVhNDVlMjcxNjA3OTE0YzA5ZjNlOjc6YmFmOTowMDAwNjIyZGJhOWZiYjQ2M2FkMDI1NzAyNDkzOWIzM2M1OWE1NTM4NWNkN2ZlNTY1NDdmYmZiYzY3ZjNjMzViOnA6VDpG" rel="stylesheet"> <style> :root {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --surface2: #1e1e1e;
+  --surface3: #272727;
+  --border: rgba(255,255,255,0.07);
+  --gold: #e6b94a;
+  --gold-dim: rgba(230,185,74,0.15);
+  --gold-dim2: rgba(230,185,74,0.08);
+  --text: #f0f0f0;
+  --text-muted: rgba(240,240,240,0.4);
+  --text-soft: rgba(240,240,240,0.65);
+  --green: #4caf7d;
+  --green-dim: rgba(76,175,125,0.12);
+  --red: #e05c5c;
+  --red-dim: rgba(224,92,92,0.12);
+  --blue: #5c9ee0;
+  --blue-dim: rgba(92,158,224,0.12);
+  --purple: #a07de0;
+  --purple-dim: rgba(160,125,224,0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(–bg);
+font-family: ‘Nunito’, sans-serif;
+color: var(–text);
+min-height: 100vh;
+padding-bottom: 60px;
+}
+
+/* HEADER */
+.header {
+background: var(–surface);
+border-bottom: 1px solid var(–border);
+padding: 16px 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+.logo { font-family: ‘Bebas Neue’, sans-serif; font-size: 26px; letter-spacing: 2px; color: var(–gold); line-height: 1; } .logo-sub { font-size: 10px; color: var(–text-muted); letter-spacing: 3px; text-transform: uppercase; } .pot-live { text-align: right; } .pot-live-label { font-size: 10px; color: var(–text-muted); letter-spacing: 2px; text-transform: uppercase; } .pot-live-value { font-family: ‘Bebas Neue’, sans-serif; font-size: 28px; color: var(–gold); letter-spacing: 1px; line-height: 1; transition: all 0.3s; }
+
+/* MAIN */
+.main { max-width: 680px; margin: 0 auto; padding: 20px 16px; }
+
+/* SECTION TITLE */
+.section-title {
+font-size: 10px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+color: var(–text-muted); margin-bottom: 10px; margin-top: 28px;
+display: flex; align-items: center; gap: 8px; } .section-title:first-child { margin-top: 0; } .section-title::after { content: ‘’; flex: 1; height: 1px; background: var(–border); }
+
+/* SESSION BAR */
+.session-bar {
+background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius);
+padding: 12px 16px; display: flex; align-items: center; gap: 10px; } .session-bar input {
+flex: 1; background: transparent; border: none; outline: none;
+color: var(–text); font-family: ‘Nunito’, sans-serif; font-size: 15px; font-weight: 700; } .session-bar input::placeholder { color: var(–text-muted); font-weight: 400; }
+
+/* ADD FORM */
+.add-form { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); padding: 16px; } .add-form-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; } .field-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; } .field-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(–text-muted); } .field-input {
+background: var(–surface2); border: 1px solid var(–border); border-radius: var(–radius-sm);
+padding: 10px 13px; color: var(–text); font-family: ‘Nunito’, sans-serif;
+font-size: 14px; font-weight: 600; outline: none; transition: border-color 0.2s; width: 100%; } .field-input:focus { border-color: var(–gold); } .field-input::placeholder { color: var(–text-muted); font-weight: 400; }
+
+.btn-add {
+background: var(–gold); color: #0d0d0d; border: none; border-radius: var(–radius-sm);
+padding: 10px 22px; font-family: ‘Nunito’, sans-serif; font-size: 14px; font-weight: 800;
+cursor: pointer; white-space: nowrap; transition: opacity 0.15s, transform 0.1s;
+height: 42px; align-self: flex-end;
+}
+.btn-add:hover { opacity: 0.85; transform: translateY(-1px); } .btn-add:active { transform: translateY(0); }
+
+/* PLAYER CARD */
+.player-card {
+background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius);
+margin-bottom: 12px; overflow: hidden; animation: slideIn 0.2s ease; } @keyframes slideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+.player-card-header {
+display: flex; align-items: center; justify-content: space-between;
+padding: 13px 16px 11px; border-bottom: 1px solid var(–border); gap: 10px; } .player-card-name { font-size: 17px; font-weight: 800; flex: 1; } .player-card-total { font-family: ‘Bebas Neue’, sans-serif; font-size: 22px; color: var(–gold); letter-spacing: 1px; } .btn-remove {
+background: none; border: 1px solid rgba(224,92,92,0.2); color: var(–red);
+border-radius: 6px; padding: 4px 9px; font-size: 15px; cursor: pointer; transition: background 0.15s; line-height: 1; } .btn-remove:hover { background: var(–red-dim); }
+
+/* PURCHASE GRID */
+.purchase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(–border); }
+@media(min-width:500px) { .purchase-grid { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+
+.purchase-cell { background: var(–surface); padding: 11px 13px; display: flex; flex-direction: column; gap: 5px; } .purchase-type-label { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; } .purchase-value { font-family: ‘Bebas Neue’, sans-serif; font-size: 20px; letter-spacing: 0.5px; } .purchase-cell-action { display: flex; gap: 5px; align-items: center; margin-top: 2px; }
+
+.purchase-micro-input {
+background: var(–surface2); border: 1px solid var(–border); border-radius: 6px;
+padding: 5px 7px; color: var(–text); font-family: ‘Nunito’, sans-serif;
+font-size: 12px; font-weight: 600; outline: none; width: 75px; transition: border-color 0.15s; } .purchase-micro-input:focus { border-color: currentColor; } .purchase-micro-input::placeholder { color: var(–text-muted); font-weight: 400; }
+
+.btn-micro {
+border: none; border-radius: 6px; padding: 5px 9px; font-size: 13px; font-weight: 800;
+cursor: pointer; transition: opacity 0.15s; line-height: 1; } .btn-micro:hover { opacity: 0.75; }
+
+/* Type themes */
+.type-buyin .purchase-type-label { color: var(–gold); } .type-buyin .purchase-value { color: var(–gold); }
+
+.type-rebuy .purchase-type-label { color: var(–green); } .type-rebuy .purchase-value { color: var(–green); } .type-rebuy .btn-micro { background: var(–green-dim); color: var(–green); border: 1px solid rgba(76,175,125,0.2); } .type-rebuy .purchase-micro-input { color: var(–green); }
+
+.type-addon .purchase-type-label { color: var(–blue); } .type-addon .purchase-value { color: var(–blue); } .type-addon .btn-micro { background: var(–blue-dim); color: var(–blue); border: 1px solid rgba(92,158,224,0.2); } .type-addon .purchase-micro-input { color: var(–blue); }
+
+.type-jonsnow .purchase-type-label { color: var(–purple); } .type-jonsnow .purchase-value { color: var(–purple); } .type-jonsnow .btn-micro { background: var(–purple-dim); color: var(–purple); border: 1px solid rgba(160,125,224,0.2); } .type-jonsnow .purchase-micro-input { color: var(–purple); }
+
+/* SUMMARY TABLE */
+.total-table { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); overflow: hidden; } .total-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1.2fr; border-bottom: 1px solid var(–border); font-size: 12px; } .total-row:last-child { border-bottom: none; } .total-row.header-row { background: var(–surface2); } .total-row.footer-row { background: var(–surface2); border-top: 1px solid rgba(230,185,74,0.2); } .total-cell { padding: 10px 11px; display: flex; align-items: center; } .total-cell.right { justify-content: flex-end; } .total-cell.center { justify-content: center; } .total-row.header-row .total-cell { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(–text-muted); } .total-row.data-row .total-cell:first-child { font-weight: 700; } .total-row.footer-row .total-cell { font-weight: 800; color: var(–gold); font-size: 13px; }
+@media(max-width:460px) {
+.total-row { grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1fr; font-size: 10px; } .total-cell { padding: 8px 6px; } }
+
+/* PRIZES */
+.prizes-card { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); padding: 18px; } .prize-count-row { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; } .prize-count-label { font-size: 12px; color: var(–text-soft); font-weight: 700; } .btn-count {
+background: var(–surface2); border: 1px solid var(–border); color: var(–text-muted);
+border-radius: 6px; padding: 5px 12px; font-family: ‘Nunito’, sans-serif;
+font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; } .btn-count:hover { border-color: var(–gold); color: var(–gold); } .btn-count.active { background: var(–gold-dim); border-color: var(–gold); color: var(–gold); }
+
+.prize-rows { display: flex; flex-direction: column; gap: 10px; } .prize-row-item { background: var(–surface2); border: 1px solid var(–border); border-radius: var(–radius-sm); padding: 12px 14px; } .prize-row-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .prize-rank { font-family: ‘Bebas Neue’, sans-serif; font-size: 17px; min-width: 60px; } .prize-player-select {
+flex: 1; min-width: 120px; background: var(–surface3); border: 1px solid var(–border);
+border-radius: 6px; padding: 7px 10px; color: var(–text); font-family: ‘Nunito’, sans-serif;
+font-size: 13px; font-weight: 600; outline: none; cursor: pointer; } .prize-player-select:focus { border-color: var(–gold); } .prize-amount-group { display: flex; align-items: center; gap: 6px; } .prize-amount-label { font-size: 11px; color: var(–text-muted); } .prize-amount-input {
+background: var(–surface3); border: 1px solid var(–border); border-radius: 6px;
+padding: 7px 10px; color: var(–text); font-family: ‘Nunito’, sans-serif;
+font-size: 13px; font-weight: 700; outline: none; width: 110px; transition: border-color 0.15s; } .prize-amount-input:focus { border-color: var(–gold); } .prize-hint { font-size: 11px; color: var(–text-muted); margin-top: 7px; padding-left: 72px; } .prize-hint strong { color: var(–gold); }
+
+.prizes-footer {
+margin-top: 16px; padding-top: 14px; border-top: 1px solid var(–border);
+display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; } .prizes-remain { font-size: 13px; color: var(–text-soft); } .prizes-remain strong { color: var(–gold); font-size: 16px; } .prizes-remain.over strong { color: var(–red); }
+
+.btn-calc {
+background: var(–gold); color: #0d0d0d; border: none; border-radius: var(–radius-sm);
+padding: 11px 26px; font-family: ‘Nunito’, sans-serif; font-size: 14px; font-weight: 800;
+cursor: pointer; transition: opacity 0.15s, transform 0.1s; } .btn-calc:hover { opacity: 0.85; transform: translateY(-1px); } .btn-calc:active { transform: translateY(0); }
+
+/* RESULTS */
+.results-card { background: var(–surface); border: 1px solid rgba(230,185,74,0.2); border-radius: var(–radius); overflow: hidden; } .results-header {
+background: linear-gradient(135deg, rgba(230,185,74,0.1), rgba(230,185,74,0.03));
+padding: 16px 20px; border-bottom: 1px solid rgba(230,185,74,0.12);
+display: flex; justify-content: space-between; align-items: center; } .results-title { font-family: ‘Bebas Neue’, sans-serif; font-size: 22px; color: var(–gold); letter-spacing: 2px; } .results-pot { font-size: 13px; color: var(–text-soft); } .results-pot strong { color: var(–gold); }
+
+.result-item {
+display: flex; align-items: center; gap: 14px; padding: 13px 20px;
+border-bottom: 1px solid var(–border); transition: background 0.15s; } .result-item:last-child { border-bottom: none; } .result-item.winner { background: rgba(230,185,74,0.03); } .result-item.loser { opacity: 0.45; } .result-medal { font-size: 22px; width: 30px; text-align: center; flex-shrink: 0; } .result-info { flex: 1; } .result-name { font-size: 16px; font-weight: 800; } .result-spent { font-size: 11px; color: var(–text-muted); margin-top: 2px; } .result-right { text-align: right; } .result-prize { font-family: ‘Bebas Neue’, sans-serif; font-size: 24px; color: var(–gold); letter-spacing: 1px; } .result-pnl { font-size: 12px; font-weight: 700; margin-top: 1px; } .pnl-pos { color: var(–green); } .pnl-neg { color: var(–red); } .pnl-zero { color: var(–text-muted); }
+
+.btn-save {
+display: block; width: calc(100% - 32px); margin: 14px 16px;
+background: var(–surface2); border: 1px solid var(–border); color: var(–text-soft);
+border-radius: var(–radius-sm); padding: 11px; font-family: ‘Nunito’, sans-serif;
+font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; } .btn-save:hover { border-color: var(–gold); color: var(–gold); }
+
+/* HISTORY */
+.history-card { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); overflow: hidden; } .history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(–border); font-size: 13px; } .history-item:last-child { border-bottom: none; } .history-name { font-weight: 700; } .history-meta { font-size: 11px; color: var(–text-muted); margin-top: 2px; } .history-pot { font-family: ‘Bebas Neue’, sans-serif; font-size: 20px; color: var(–gold); } .history-footer { padding: 10px 16px; border-top: 1px solid var(–border); background: var(–surface2); text-align: center; } .btn-clear { background: none; border: none; color: rgba(224,92,92,0.45); font-family: ‘Nunito’, sans-serif; font-size: 12px; cursor: pointer; transition: color 0.15s; } .btn-clear:hover { color: var(–red); }
+
+/* EMPTY */
+.empty { text-align: center; padding: 36px 20px; color: var(–text-muted); font-size: 14px; } .empty-icon { font-size: 34px; margin-bottom: 10px; }
+
+/* CONFIRM MODAL */
+.modal-overlay {
+position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+display: flex; align-items: center; justify-content: center;
+z-index: 200; animation: fadeOverlay 0.15s ease; } @keyframes fadeOverlay { from{opacity:0} to{opacity:1} } .modal-box {
+background: var(–surface2); border: 1px solid var(–border);
+border-radius: var(–radius); padding: 24px 24px 20px;
+max-width: 320px; width: 90%; animation: popIn 0.15s ease;
+text-align: center;
+}
+@keyframes popIn { from{opacity:0;transform:scale(0.93)} to{opacity:1;transform:scale(1)} } .modal-msg { font-size: 15px; font-weight: 600; line-height: 1.5; margin-bottom: 20px; } .modal-msg strong { color: var(–gold); } .modal-btns { display: flex; gap: 10px; justify-content: center; } .modal-btn-yes {
+background: var(–red-dim); border: 1px solid rgba(224,92,92,0.35); color: var(–red);
+border-radius: var(–radius-sm); padding: 10px 28px; font-family: ‘Nunito’, sans-serif;
+font-size: 14px; font-weight: 800; cursor: pointer; transition: background 0.15s; } .modal-btn-yes:hover { background: rgba(224,92,92,0.25); } .modal-btn-no {
+background: var(–surface3); border: 1px solid var(–border); color: var(–text-soft);
+border-radius: var(–radius-sm); padding: 10px 28px; font-family: ‘Nunito’, sans-serif;
+font-size: 14px; font-weight: 800; cursor: pointer; transition: background 0.15s; } .modal-btn-no:hover { background: var(–surface); }
+
+/* TOAST */
+.toast {
+position: fixed; bottom: 24px; left: 50%;
+transform: translateX(-50%) translateY(80px);
+background: var(–surface3); border: 1px solid var(–border);
+border-radius: 30px; padding: 10px 22px; font-size: 13px; font-weight: 600;
+color: var(–text); transition: transform 0.3s; z-index: 999; white-space: nowrap; } .toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Legend strip */
+.legend-strip {
+display: flex; gap: 16px; flex-wrap: wrap;
+background: var(–surface); border: 1px solid var(–border);
+border-radius: var(–radius-sm); padding: 10px 14px; margin-bottom: 10px; } .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(–text-muted); } .legend-dot { width: 8px; height: 8px; border-radius: 50%; } </style>
+
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">HOME GAME</div>
+    <div class="logo-sub">♠ ♥ ♦ ♣ Poker</div>
+  </div>
+  <div class="pot-live">
+    <div class="pot-live-label">Pote Total</div>
+    <div class="pot-live-value" id="livePot">R$ 0,00</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- SESSION -->
+
+  <div class="section-title">Sessão</div>
+  <div class="session-bar">
+    <span>📅</span>
+    <input type="text" id="sessionName" placeholder="ex: 02/05/2025" />
+  </div>
+
+  <!-- ADD PLAYER -->
+
+  <div class="section-title">Adicionar Jogador</div>
+  <div class="add-form">
+    <div class="add-form-row">
+      <div class="field-group">
+        <div class="field-label">Nome</div>
+        <input class="field-input" type="text" id="newName" placeholder="Nome do jogador"
+          onkeydown="if(event.key==='Enter') document.getElementById('newBuyin').focus()" />
+      </div>
+      <div class="field-group" style="max-width:155px;">
+        <div class="field-label">Buy-In (R$)</div>
+        <input class="field-input" type="number" id="newBuyin" placeholder="0,00" min="0" step="0.01"
+          onkeydown="if(event.key==='Enter') addPlayer()" />
+      </div>
+      <button class="btn-add" onclick="addPlayer()">+ Adicionar</button>
+    </div>
+  </div>
+
+  <!-- PLAYERS -->
+
+  <div class="section-title">Jogadores na Mesa</div>
+
+  <div class="legend-strip">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Buy-In</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Rebuy (acumula)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Add-On (fixo)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Jon Snow (acumula)</div>
+  </div>
+
+  <div id="playersList"></div>
+
+  <!-- SUMMARY -->
+
+  <div id="summarySection" style="display:none">
+    <div class="section-title">Resumo de Investimentos</div>
+    <div class="total-table" id="summaryTable"></div>
+  </div>
+
+  <!-- PRIZES -->
+
+  <div id="prizesSection" style="display:none">
+    <div class="section-title">Distribuição de Prêmios</div>
+    <div class="prizes-card">
+      <div class="prize-count-row">
+        <span class="prize-count-label">Nº de premiados:</span>
+        <div id="prizeCountBtns" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      </div>
+      <div class="prize-rows" id="prizeRows"></div>
+      <div class="prizes-footer">
+        <div class="prizes-remain" id="prizesRemain">Saldo restante: <strong>R$ 0,00</strong></div>
+        <button class="btn-calc" onclick="calcResults()">Ver Resultado →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+
+  <div id="resultsSection" style="display:none">
+    <div class="section-title">Resultado Final</div>
+    <div class="results-card">
+      <div class="results-header">
+        <div class="results-title">🏆 Premiação</div>
+        <div class="results-pot">Pote: <strong id="resultPotDisplay"></strong></div>
+      </div>
+      <div id="resultsList"></div>
+      <button class="btn-save" onclick="saveSession()">💾 Salvar Sessão no Histórico</button>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+
+  <div id="historySection" style="display:none">
+    <div class="section-title">Histórico de Sessões</div>
+    <div class="history-card">
+      <div id="historyList"></div>
+      <div class="history-footer">
+        <button class="btn-clear" onclick="clearHistory()">Limpar histórico</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──
+let players   = []; // { id, name, buyin, rebuy, addon, jonsnow }
+let prizeCount = 3;
+let prizeData  = []; // [{ playerId, amount }]
+
+const uid        = () => Math.random().toString(36).slice(2,8);
+const fmt        = v  => 'R$ ' + v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const parseMoney = s  => { const v = parseFloat(String(s).replace(',','.')); return isNaN(v)||v<0 ? 0 : v; };
+
+function playerTotal(p) { return p.buyin + p.rebuy + p.addon + p.jonsnow; }
+function totalPot()     { return players.reduce((a,p) => a + playerTotal(p), 0); }
+
+// ── ADD PLAYER ──
+function addPlayer() {
+  const name  = document.getElementById('newName').value.trim();
+  const buyin = parseMoney(document.getElementById('newBuyin').value);
+  if (!name)    { showToast('⚠ Insira o nome do jogador'); return; }
+  if (buyin<=0) { showToast('⚠ Insira um valor de Buy-In'); return; }
+  players.push({ id: uid(), name, buyin, rebuy: 0, addon: 0, jonsnow: 0 });
+  document.getElementById('newName').value  = '';
+  document.getElementById('newBuyin').value = '';
+  document.getElementById('newName').focus();
+  render();
+}
+
+function removePlayer(id) {
+  const p = players.find(x => x.id === id);
+  showConfirm(`Remover <strong>${p.name}</strong> da mesa?`, () => {
+    players = players.filter(x => x.id !== id);
+    render();
+  });
+}
+
+// ── PURCHASES ──
+function addRebuy(id) {
+  const inp = document.querySelector(`[data-rebuy="${id}"]`);
+  const raw = parseFloat(String(inp.value).replace(',','.'));
+  if (isNaN(raw) || raw === 0) { showToast('⚠ Valor inválido'); return; }
+  const p = players.find(x => x.id===id);
+  const next = p.rebuy + raw;
+  if (next < 0) { showToast('⚠ Rebuy não pode ficar negativo'); return; }
+  p.rebuy = next;
+  inp.value = '';
+  render();
+}
+
+function setAddon(id) {
+  const inp = document.querySelector(`[data-addon="${id}"]`);
+  const val = parseMoney(inp.value);
+  if (val <= 0) { showToast('⚠ Valor inválido'); return; }
+  players.find(p => p.id===id).addon = val;
+  inp.value = '';
+  render();
+}
+
+function addJonSnow(id) {
+  const inp = document.querySelector(`[data-jonsnow="${id}"]`);
+  const raw = parseFloat(String(inp.value).replace(',','.'));
+  if (isNaN(raw) || raw === 0) { showToast('⚠ Valor inválido'); return; }
+  const p = players.find(x => x.id===id);
+  const next = p.jonsnow + raw;
+  if (next < 0) { showToast('⚠ Jon Snow não pode ficar negativo'); return; }
+  p.jonsnow = next;
+  inp.value = '';
+  render();
+}
+
+// ── PRIZES ──
+function setPrizeCount(n) {
+  prizeCount = n;
+  while (prizeData.length < n) prizeData.push({ playerId:'', amount:0 });
+  prizeData = prizeData.slice(0, n);
+  renderPrizes();
+}
+
+function updatePrizePlayer(i, val) { prizeData[i].playerId = val; renderPrizesRemain(); } function updatePrizeAmount(i, val) { prizeData[i].amount = parseMoney(val); renderPrizesRemain(); }
+
+function allocatedTotal() { return prizeData.reduce((a,b) => a + b.amount, 0); }
+
+function renderPrizesRemain() {
+  const remain = totalPot() - allocatedTotal();
+  const el     = document.getElementById('prizesRemain');
+  const over   = remain < -0.005;
+  el.className = 'prizes-remain' + (over ? ' over' : '');
+  el.innerHTML = over
+    ? `Excedido em: <strong>${fmt(Math.abs(remain))}</strong>`
+    : `Saldo restante: <strong>${fmt(Math.max(0, remain))}</strong>`;
+  updateHints();
+}
+
+// Suggested amounts: 50/30/20 of pot, adjusted for what's already set above function updateHints() {
+  const pot          = totalPot();
+  const defaultPcts  = [50, 30, 20];
+  document.querySelectorAll('.prize-hint').forEach((h, i) => {
+    const pct = defaultPcts[i];
+    if (pct == null || pot <= 0) { h.innerHTML = ''; return; }
+    // subtract amounts locked in by HIGHER places
+    let usedAbove = 0;
+    for (let j = 0; j < i; j++) usedAbove += prizeData[j]?.amount || 0;
+    const available  = pot - usedAbove;
+    const suggestion = pot * pct / 100;
+    const show       = suggestion <= available + 0.01 ? suggestion : available;
+    const showPct    = ((show / pot) * 100).toFixed(0);
+    h.innerHTML = `Sugestão: <strong>${fmt(show)}</strong> (${showPct}% do pote)`;
+  });
+}
+
+// ── RESULTS ──
+function calcResults() {
+  const pot   = totalPot();
+  const alloc = allocatedTotal();
+  if (alloc > pot + 0.01) { showToast('⚠ Valor dos prêmios excede o pote!'); return; }
+  for (let i = 0; i < prizeCount; i++) {
+    if (!prizeData[i].playerId) { showToast(`⚠ Selecione o ${i+1}º colocado`); return; }
+  }
+  const ids = prizeData.map(d => d.playerId);
+  if (new Set(ids).size !== ids.length) { showToast('⚠ Jogador duplicado na classificação'); return; }
+
+  const medals    = ['🥇','🥈','🥉','④','⑤','⑥','⑦','⑧'];
+  const winnerIds = prizeData.map(d => d.playerId);
+  const rl        = document.getElementById('resultsList');
+  rl.innerHTML    = '';
+
+  prizeData.forEach((d, i) => {
+    const p     = players.find(x => x.id===d.playerId);
+    const prize = d.amount;
+    const spent = playerTotal(p);
+    const pnl   = prize - spent;
+    const item  = document.createElement('div');
+    item.className = 'result-item winner';
+    item.innerHTML = `
+      <div class="result-medal">${medals[i]||'▪'}</div>
+      <div class="result-info">
+        <div class="result-name">${p.name}</div>
+        <div class="result-spent">Investido: ${fmt(spent)}</div>
+      </div>
+      <div class="result-right">
+        <div class="result-prize">${fmt(prize)}</div>
+        <div class="result-pnl ${pnl>0?'pnl-pos':pnl<0?'pnl-neg':'pnl-zero'}">${pnl>0?'+':''}${fmt(pnl)}</div>
+      </div>`;
+    rl.appendChild(item);
+  });
+
+  const nonWinners = players.filter(p => !winnerIds.includes(p.id));
+  if (nonWinners.length > 0) {
+    const sep = document.createElement('div');
+    sep.style.cssText = 'font-size:9px;letter-spacing:3px;text-align:center;padding:7px;color:var(--text-muted);background:var(--surface2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);';
+    sep.textContent = 'SEM PREMIAÇÃO';
+    rl.appendChild(sep);
+    nonWinners.forEach(p => {
+      const spent = playerTotal(p);
+      const item  = document.createElement('div');
+      item.className = 'result-item loser';
+      item.innerHTML = `
+        <div class="result-medal" style="font-size:16px;color:var(--text-muted)">—</div>
+        <div class="result-info">
+          <div class="result-name">${p.name}</div>
+          <div class="result-spent">Investido: ${fmt(spent)}</div>
+        </div>
+        <div class="result-right">
+          <div class="result-prize" style="font-size:16px;color:var(--text-muted)">—</div>
+          <div class="result-pnl pnl-neg">-${fmt(spent)}</div>
+        </div>`;
+      rl.appendChild(item);
+    });
+  }
+
+  document.getElementById('resultPotDisplay').textContent = fmt(pot);
+  document.getElementById('resultsSection').style.display = 'block';
+  document.getElementById('resultsSection').scrollIntoView({ behavior:'smooth', block:'start' }); }
+
+// ── SAVE / HISTORY ──
+function saveSession() {
+  const now  = new Date();
+  const date = now.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
+  const name = document.getElementById('sessionName').value.trim() || ('Sessão ' + date);
+  const history = JSON.parse(localStorage.getItem('pgHistory')||'[]');
+  history.unshift({ id: uid(), name, date, pot: totalPot(), players: players.length });
+  localStorage.setItem('pgHistory', JSON.stringify(history.slice(0, 20)));
+  renderHistory();
+  showToast('✅ Sessão salva!');
+}
+
+function deleteHistoryItem(id) {
+  const history = JSON.parse(localStorage.getItem('pgHistory')||'[]');
+  const item    = history.find(h => h.id === id);
+  showConfirm(`Apagar <strong>${item ? item.name : 'esta sessão'}</strong> do histórico?`, () => {
+    localStorage.setItem('pgHistory', JSON.stringify(history.filter(h => h.id !== id)));
+    renderHistory();
+  });
+}
+
+function clearHistory() {
+  showConfirm('Apagar <strong>todo o histórico</strong>?', () => {
+    localStorage.removeItem('pgHistory');
+    renderHistory();
+  });
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('pgHistory')||'[]');
+  const sec     = document.getElementById('historySection');
+  if (!history.length) { sec.style.display='none'; return; }
+  sec.style.display = 'block';
+  const hl = document.getElementById('historyList');
+  hl.innerHTML = '';
+  history.forEach(h => {
+    if (!h.id) h.id = uid();
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `
+      <div style="flex:1">
+        <div class="history-name">${h.name}</div>
+        <div class="history-meta">${h.date} · ${h.players} jogadores</div>
+      </div>
+      <div class="history-pot">${fmt(h.pot)}</div>
+      <button class="btn-remove" style="margin-left:12px;flex-shrink:0" onclick="deleteHistoryItem('${h.id}')">✕</button>`;
+    hl.appendChild(item);
+  });
+}
+
+// ── RENDER PRIZES ──
+function renderPrizes() {
+  const pot         = totalPot();
+  const rankColors  = ['#e6b94a','#c0c0c0','#cd7f32','#88aacc','#a07de0','#4caf7d','#e05c5c','#e0aa5c'];
+  const placeLabels = Array.from({length: 20}, (_, i) => `${i+1}º Lugar`);
+
+  // Count buttons — hidden, count is automatic
+  const cBtns = document.getElementById('prizeCountBtns');
+  cBtns.innerHTML = '';
+  document.querySelector('.prize-count-row').style.display = 'none';
+
+  const prRows = document.getElementById('prizeRows');
+  prRows.innerHTML = '';
+
+  for (let i = 0; i < prizeCount; i++) {
+    const d   = prizeData[i] || { playerId:'', amount:0 };
+    const div = document.createElement('div');
+    div.className = 'prize-row-item';
+
+    let opts = `<option value="">— Selecionar jogador —</option>`;
+    players.forEach(p => {
+      opts += `<option value="${p.id}" ${d.playerId===p.id?'selected':''}>${p.name}</option>`;
+    });
+
+    div.innerHTML = `
+      <div class="prize-row-top">
+        <span class="prize-rank" style="color:${rankColors[i]}">${placeLabels[i]}</span>
+        <select class="prize-player-select" onchange="updatePrizePlayer(${i},this.value)">${opts}</select>
+        <div class="prize-amount-group">
+          <span class="prize-amount-label">R$</span>
+          <input class="prize-amount-input" type="number" min="0" step="0.01"
+            value="${d.amount > 0 ? d.amount.toFixed(2) : ''}"
+            placeholder="0,00"
+            oninput="updatePrizeAmount(${i}, this.value)"
+            style="border-color:${rankColors[i]}33">
+        </div>
+      </div>
+      <div class="prize-hint" id="hint${i}"></div>`;
+    prRows.appendChild(div);
+  }
+
+  renderPrizesRemain();
+}
+
+// ── MAIN RENDER ──
+function render() {
+  document.getElementById('livePot').textContent = fmt(totalPot());
+
+  // Players list
+  const list = document.getElementById('playersList');
+  list.innerHTML = '';
+
+  if (players.length === 0) {
+    list.innerHTML = `<div class="empty"><div class="empty-icon">🃏</div>Nenhum jogador adicionado ainda</div>`;
+  }
+
+  players.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'player-card';
+    card.innerHTML = `
+      <div class="player-card-header">
+        <div class="player-card-name">${p.name}</div>
+        <div class="player-card-total">${fmt(playerTotal(p))}</div>
+        <button class="btn-remove" onclick="removePlayer('${p.id}')">✕</button>
+      </div>
+      <div class="purchase-grid">
+
+        <div class="purchase-cell type-buyin">
+          <div class="purchase-type-label">Buy-In</div>
+          <div class="purchase-value">${fmt(p.buyin)}</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:auto">fixo na entrada</div>
+        </div>
+
+        <div class="purchase-cell type-rebuy">
+          <div class="purchase-type-label">Rebuy</div>
+          <div class="purchase-value">${fmt(p.rebuy)}</div>
+          <div class="purchase-cell-action">
+            <input class="purchase-micro-input" type="number" data-rebuy="${p.id}"
+              placeholder="ex: -10" step="0.01"
+              onkeydown="if(event.key==='Enter') addRebuy('${p.id}')">
+            <button class="btn-micro" onclick="addRebuy('${p.id}')"
+              style="background:var(--green-dim);color:var(--green);border:1px solid rgba(76,175,125,0.2)">+</button>
+          </div>
+        </div>
+
+        <div class="purchase-cell type-addon">
+          <div class="purchase-type-label">Add-On</div>
+          <div class="purchase-value">${fmt(p.addon)}</div>
+          <div class="purchase-cell-action">
+            <input class="purchase-micro-input" type="number" data-addon="${p.id}"
+              placeholder="valor" min="0" step="0.01"
+              onkeydown="if(event.key==='Enter') setAddon('${p.id}')">
+            <button class="btn-micro" onclick="setAddon('${p.id}')"
+              style="background:var(--blue-dim);color:var(--blue);border:1px solid rgba(92,158,224,0.2)">✓</button>
+          </div>
+        </div>
+
+        <div class="purchase-cell type-jonsnow">
+          <div class="purchase-type-label">Jon Snow</div>
+          <div class="purchase-value">${fmt(p.jonsnow)}</div>
+          <div class="purchase-cell-action">
+            <input class="purchase-micro-input" type="number" data-jonsnow="${p.id}"
+              placeholder="ex: -10" step="0.01"
+              onkeydown="if(event.key==='Enter') addJonSnow('${p.id}')">
+            <button class="btn-micro" onclick="addJonSnow('${p.id}')"
+              style="background:var(--purple-dim);color:var(--purple);border:1px solid rgba(160,125,224,0.2)">+</button>
+          </div>
+        </div>
+
+      </div>`;
+    list.appendChild(card);
+  });
+
+  // Summary table
+  const summSec = document.getElementById('summarySection');
+  if (players.length === 0) { summSec.style.display='none'; }
+  else {
+    summSec.style.display = 'block';
+    const tbl = document.getElementById('summaryTable');
+    tbl.innerHTML = `
+      <div class="total-row header-row">
+        <div class="total-cell">Jogador</div>
+        <div class="total-cell center">Buy-In</div>
+        <div class="total-cell center">Rebuy</div>
+        <div class="total-cell center">Add-On</div>
+        <div class="total-cell center">Jon Snow</div>
+        <div class="total-cell right">Total</div>
+      </div>`;
+    players.forEach(p => {
+      const row = document.createElement('div');
+      row.className = 'total-row data-row';
+      row.innerHTML = `
+        <div class="total-cell">${p.name}</div>
+        <div class="total-cell center" style="color:var(--gold)">${fmt(p.buyin)}</div>
+        <div class="total-cell center" style="color:var(--green)">${fmt(p.rebuy)}</div>
+        <div class="total-cell center" style="color:var(--blue)">${fmt(p.addon)}</div>
+        <div class="total-cell center" style="color:var(--purple)">${fmt(p.jonsnow)}</div>
+        <div class="total-cell right" style="font-weight:800">${fmt(playerTotal(p))}</div>`;
+      tbl.appendChild(row);
+    });
+    const foot = document.createElement('div');
+    foot.className = 'total-row footer-row';
+    foot.innerHTML = `
+      <div class="total-cell">TOTAL MESA</div>
+      <div class="total-cell center">${fmt(players.reduce((a,p)=>a+p.buyin,0))}</div>
+      <div class="total-cell center">${fmt(players.reduce((a,p)=>a+p.rebuy,0))}</div>
+      <div class="total-cell center">${fmt(players.reduce((a,p)=>a+p.addon,0))}</div>
+      <div class="total-cell center">${fmt(players.reduce((a,p)=>a+p.jonsnow,0))}</div>
+      <div class="total-cell right">${fmt(totalPot())}</div>`;
+    tbl.appendChild(foot);
+  }
+
+  // Prizes section — prize count always = number of players
+  const priz = document.getElementById('prizesSection');
+  if (players.length >= 2) {
+    priz.style.display = 'block';
+    prizeCount = players.length;
+    while (prizeData.length < prizeCount) prizeData.push({ playerId:'', amount:0 });
+    prizeData = prizeData.slice(0, prizeCount);
+    renderPrizes();
+  } else {
+    priz.style.display = 'none';
+  }
+
+  document.getElementById('resultsSection').style.display = 'none'; }
+
+// ── CONFIRM MODAL ──
+function showConfirm(msg, onYes) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-msg">${msg}</div>
+      <div class="modal-btns">
+        <button class="modal-btn-yes" id="modalYes">Sim, remover</button>
+        <button class="modal-btn-no" id="modalNo">Não</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.querySelector('#modalYes').onclick = () => { overlay.remove(); onYes(); };
+  overlay.querySelector('#modalNo').onclick  = () => overlay.remove();
+  overlay.onclick = e => { if (e.target === overlay) overlay.remove(); }; }
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500); }
+
+// ── INIT ──
+renderHistory();
+render();
+</script>
+
+</body>
+</html>
